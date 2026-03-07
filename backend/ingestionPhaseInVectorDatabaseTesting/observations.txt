@@ -1,0 +1,147 @@
+----- SUMMARY ----- // 10, 50
+Total batches: 1400
+Total vectors inserted: 70000
+Elapsed (s): 126.359
+Overall throughput (vectors/sec): 553.98
+Per-batch latency p50/p95/p99 (s): 0.819674 / 1.378482 / 2.025263
+Mean per-batch latency (s): 0.889961
+Wrote per-batch latencies to latencies10.csv
+
+--- Phase 3: Build index (post-ingestion, sync) ---
+Index build (sync) took 99.97s
+
+
+--- Phase 0: Resetting Milvus Architecture ---
+Available collections: ['stresstestingragingestionphase', 'collectTextWithMetadata', 'parentEmbedding', 'childrenEmbeddingLateChunking']
+Collection exists. Checking for active tasks and clearing state...
+Checking for active background tasks...
+Number of indexes found are 1
+Indices found are: ['vector']
+Waiting for previous index 'vector' to complete before dropping collection
+2026-03-04 18:10:11,358 [ERROR][handler]: RPC error: [drop_index], <MilvusException: (code=1100, message=vector index cannot be dropped on loaded collection: 464043592750046586: invalid parameter)>, <Time:{'RPC start': '2026-03-04 18:10:10.757932', 'RPC error': '2026-03-04 18:10:11.358608'}> (decorators.py:140)
+Index 'vector' did not complete in time. Proceeding with drop anyway, but be aware of potential CPU spikes <MilvusException: (code=1100, message=vector index cannot be dropped on loaded collection: 464043592750046586: invalid parameter)>
+
+----- SUMMARY ----- // 20, 50
+Total batches: 1400
+Total vectors inserted: 70000
+Elapsed (s): 112.405
+Overall throughput (vectors/sec): 622.75
+Per-batch latency p50/p95/p99 (s): 1.566476 / 1.924933 / 2.223018
+Mean per-batch latency (s): 1.590853
+Wrote per-batch latencies to latencies20.csv
+
+--- Phase 3: Build index (post-ingestion, sync) ---
+Index build (sync) took 245.45s
+Wait for 30 seconds before starting the next run to allow system to stabilize
+
+
+
+----- SUMMARY ----- 5 workers, 300 batch size
+Total batches: 234
+Total vectors inserted: 70000
+Elapsed (s): 1360.049
+Overall throughput (vectors/sec): 51.47
+Per-batch latency p50/p95/p99 (s): 5.777714 / 8.253604 / 9.265907
+Mean per-batch latency (s): 5.680714
+Wrote per-batch latencies to latencies570000.csv
+
+
+----- SUMMARY ----- 10 workers, 200 batch size
+Total batches: 350
+Total vectors inserted: 70000
+Elapsed (s): 232.668
+Overall throughput (vectors/sec): 300.86
+Per-batch latency p50/p95/p99 (s): 6.444689 / 7.971740 / 16.407247
+Mean per-batch latency (s): 6.553527
+Wrote per-batch latencies to latencies10200.csv
+
+
+----- SUMMARY ----- 10 workers, 100 batch size
+Total batches: 700
+Total vectors inserted: 70000
+Elapsed (s): 489.830
+Overall throughput (vectors/sec): 142.91
+Per-batch latency p50/p95/p99 (s): 6.425406 / 12.406736 / 14.208218
+Mean per-batch latency (s): 6.942385
+Wrote per-batch latencies to latencies10100.csv
+
+----- SUMMARY ----- // 8 workers, 150 batch size
+Total batches: 467
+Total vectors inserted: 70000
+Elapsed (s): 307.810
+Overall throughput (vectors/sec): 227.41
+Per-batch latency p50/p95/p99 (s): 5.088809 / 6.962553 / 7.584827
+Mean per-batch latency (s): 5.222452
+Wrote per-batch latencies to latencies8150.csv
+
+----- SUMMARY ----- // 10 workers, 150 batch size
+Total batches: 467
+Total vectors inserted: 70000
+Elapsed (s): 324.647
+Overall throughput (vectors/sec): 215.62
+Per-batch latency p50/p95/p99 (s): 6.744440 / 9.197360 / 10.841769
+Mean per-batch latency (s): 6.902059
+Wrote per-batch latencies to latencies10150.csv
+
+----- SUMMARY -----
+Total batches: 1167
+Total vectors inserted: 70000
+Elapsed (s): 576.905
+Overall throughput (vectors/sec): 121.34
+Per-batch latency p50/p95/p99 (s): 4.804157 / 7.306785 / 8.509564
+Mean per-batch latency (s): 4.922482
+Wrote per-batch latencies to latencies1060.csv
+
+----- SUMMARY ----- 10 workers, 80 batch size
+Total batches: 875
+Total vectors inserted: 70000
+Elapsed (s): 143.350
+Overall throughput (vectors/sec): 488.31
+Per-batch latency p50/p95/p99 (s): 1.554180 / 2.191721 / 2.498716
+Mean per-batch latency (s): 1.614194
+Wrote per-batch latencies to latencies1080.csv
+
+----- SUMMARY ----- 12 workers, 110 batch size
+Total batches: 778
+Total vectors inserted: 70000
+Elapsed (s): 139.448
+Overall throughput (vectors/sec): 501.98
+Per-batch latency p50/p95/p99 (s): 2.084963 / 3.045019 / 3.753490
+Mean per-batch latency (s): 2.129508
+Wrote per-batch latencies to latencies1290.csv
+
+----- SUMMARY ----- 12 workers, 120 batch size
+Total batches: 637
+Total vectors inserted: 70000
+Elapsed (s): 148.410
+Overall throughput (vectors/sec): 471.67
+Per-batch latency p50/p95/p99 (s): 2.713711 / 3.674415 / 4.267061
+Mean per-batch latency (s): 2.753554
+Wrote per-batch latencies to latencies12110.csv
+
+----- SUMMARY ----- 14 workers, 80 batch size
+Total batches: 875
+Total vectors inserted: 70000
+Elapsed (s): 135.400
+Overall throughput (vectors/sec): 516.99
+Per-batch latency p50/p95/p99 (s): 2.019302 / 2.560841 / 7.786939
+Mean per-batch latency (s): 2.140485
+Wrote per-batch latencies to latencies1480.csv
+
+----- SUMMARY ----- 15 workers, 50 batch size
+Total batches: 1400
+Total vectors inserted: 70000
+Elapsed (s): 137.331
+Overall throughput (vectors/sec): 509.72
+Per-batch latency p50/p95/p99 (s): 1.420704 / 1.938992 / 2.609341
+Mean per-batch latency (s): 1.454079
+Wrote per-batch latencies to latencies1550.csv
+
+----- SUMMARY ----- 21 workers, 50 batch size
+Total batches: 1400
+Total vectors inserted: 70000
+Elapsed (s): 121.252
+Overall throughput (vectors/sec): 577.31
+Per-batch latency p50/p95/p99 (s): 1.737967 / 2.538014 / 2.943171
+Mean per-batch latency (s): 1.801576
+Wrote per-batch latencies to latencies2150.csv
