@@ -145,3 +145,12 @@ Overall throughput (vectors/sec): 577.31
 Per-batch latency p50/p95/p99 (s): 1.737967 / 2.538014 / 2.943171
 Mean per-batch latency (s): 1.801576
 Wrote per-batch latencies to latencies2150.csv
+
+----- SUMMARY ----- 22 workers, 50 batch size
+Total batches: 1400
+Total vectors inserted: 70000
+Elapsed (s): 187.418
+Overall throughput (vectors/sec): 373.50
+Per-batch latency p50/p95/p99 (s): 2.707319 / 4.240727 / 5.264834
+Mean per-batch latency (s): 2.912123
+Wrote per-batch latencies to latencies2250.csv
