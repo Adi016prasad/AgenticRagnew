@@ -1,0 +1,15 @@
+--- Generating Summary from Captured Data --- // 10 workers, topk = 3
+
+========================================
+--- Final Querying Summary ---
+Total Queries Executed : 9998
+Total Time Elapsed     : 751.92 seconds
+Overall QPS            : 13.30 queries/sec
+Average Latency        : 0.750391 seconds
+p25 Latency            : 0.248780 seconds
+p50 Latency            : 0.361194 seconds
+p95 Latency            : 2.412968 seconds
+p99 Latency            : 4.283143 seconds
+========================================
+
+Successfully saved summary to latencies103.csv

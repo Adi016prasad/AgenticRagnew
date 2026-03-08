@@ -131,14 +131,24 @@ class AsyncQuery:
 
     async def run(self):
         """Orchestrate workers + producer + reporter and return elapsed seconds."""
-        workers = [asyncio.create_task(self.query(i)) for i in range(self.num_workers)]
         self.start_time = time.perf_counter()
+        
+        # Create tasks
+        workers = [asyncio.create_task(self.query(i)) for i in range(self.num_workers)]
         reporter_task = asyncio.create_task(self.reporter())
-        await self.producer()
-        await asyncio.gather(*workers)
-        await reporter_task
-        elapsed = time.perf_counter() - self.start_time
-        return elapsed
+        
+        try:
+            await self.producer()
+            await asyncio.gather(*workers)
+            # Wait for reporter to finish naturally or cancel it after workers are done
+            await reporter_task 
+        except Exception as e:
+            print(f"\n[!] Run interrupted by error: {e}")
+            # Re-raise to be caught by main's finally block
+            raise 
+        finally:
+            elapsed = time.perf_counter() - self.start_time
+            return elapsed
 
 def summarize_and_write(latencies, elapsed, out_csv):
     """Calculates percentiles and QPS, prints a summary, and logs it to a CSV."""
@@ -203,14 +213,30 @@ def generate_normalized_vectors(n: int, dim: int, seed: int = 42) -> np.ndarray:
 def main():
     print("--- Phase 1: Data Generation ---")
     vectors = generate_normalized_vectors(NUMVECTORS, DIMENSIONS)
-    print(f"Generated {len(vectors)} vectors ({vectors.nbytes / (1024**3):.2f} GB)")
+    print(f"Generated {len(vectors)} vectors")
 
-    print("\n--- Phase 2: Async Querying (no dynamic scaling) ---")
-    runner = AsyncQuery(collection_name = COLLECTIONNAME, vectors = vectors, top_k = TOPK)
-    elapsed = asyncio.run(runner.run())
-
-    summarize_and_write(runner.latencies, elapsed, out_csv=f"latencies{NUMWORKERS}{TOPK}.csv")
-
+    print("\n--- Phase 2: Async Querying (Robust Mode) ---")
+    runner = AsyncQuery(collection_name=COLLECTIONNAME, vectors=vectors, top_k=TOPK)
+    
+    start_bench = time.perf_counter()
+    elapsed = 0
+    
+    try:
+        elapsed = asyncio.run(runner.run())
+    except KeyboardInterrupt:
+        print("\n[!] Manual stop detected (Ctrl+C). Saving partial results...")
+    except Exception as e:
+        print(f"\n[!] Critical Failure: {e}")
+    finally:
+        if elapsed == 0:
+            elapsed = time.perf_counter() - start_bench
+            
+        print("\n--- Generating Summary from Captured Data ---")
+        summarize_and_write(
+            runner.latencies, 
+            elapsed, 
+            out_csv=f"latencies{NUMWORKERS}{TOPK}.csv"
+        )
 
 if __name__ == "__main__":
     main()
