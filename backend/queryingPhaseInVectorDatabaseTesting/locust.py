@@ -16,6 +16,7 @@ logger = logging.getLogger("MilvusTest")
 load_dotenv()
 
 SHARED_VECTORS = np.random.standard_normal(size=(1000, 4096)).astype(np.float32)
+SHAREDVECTORSLIST = SHARED_VECTORS.tolist()
 
 # 1. Define a global variable for the shared client
 global_client = None
@@ -54,7 +55,7 @@ class MilvusUser(User):
             return 
             
         idx = np.random.randint(0, len(SHARED_VECTORS))
-        query_vec = SHARED_VECTORS[idx].tolist()
+        query_vec = SHAREDVECTORSLIST[idx]
         
         start_time = time.perf_counter()
         
