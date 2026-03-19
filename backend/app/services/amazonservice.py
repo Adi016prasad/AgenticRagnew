@@ -67,7 +67,7 @@ class UploadFile():
                 Bucket = self.bucket_name,
                 Key = keyName
             )
-            logger.info(response)
+            logger.info(response) # XNX7oMGrQ1ymCd136zVWlg
             logger.info("It is deleted")
         except Exception as e:
             raise e
