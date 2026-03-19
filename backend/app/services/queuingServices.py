@@ -72,6 +72,7 @@ class KafkaProducerService:
 class MessagingManager:
     def __init__(self, producer: MessageProducer):
         self.producer = producer
+
     async def send_user_message(self, user_id: str, session_id: str, message: str, routing_key: str, **kwargs):
         payload = {
             "userId": user_id,
