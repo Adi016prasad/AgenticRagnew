@@ -57,11 +57,11 @@ class KafkaProducerService:
     @retry_with_backoff(max_retries = MAX_S3_RETRIES, base_delay = S3_BASE_DELAY)
     async def send(self, key: str, payload: Dict[str, Any]) -> Optional[Any]:
         try:
-            serialized_value = json.dumps(payload).encode('utf-8')
+            data = json.dumps(payload).encode('utf-8')
             metadata = await self._producer.send_and_wait(
                 topic=self._topic,
                 key=key.encode('utf-8'),
-                value=serialized_value
+                value=data
             )
             logger.info(f"Message delivered to {self._topic} [p={metadata.partition}, o={metadata.offset}]")
             return metadata
