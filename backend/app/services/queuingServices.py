@@ -2,8 +2,8 @@ import os
 import json
 import logging
 import asyncio
-from typing import Any, Dict, Optional, Protocol
-from aiokafka import AIOKafkaProducer
+from typing import Any, Dict, Optional, Protocol, AsyncGenerator
+from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 from aiokafka.errors import KafkaError
 from dotenv import load_dotenv
 from app.utils.retryWithBackoff import retry_with_backoff
@@ -20,6 +20,11 @@ class MessageProducer(Protocol):
     async def send(self, key: str, payload: Dict[str, Any]) -> Any: ...
     async def is_healthy(self) -> bool: ...
 
+class MessageConsumer(Protocol):
+    async def start(self) -> None: ...
+    async def stop(self) -> None: ...
+    # async def isHealthy(self) -> bool: ...
+    async def consumeMessageViaConsumer(self) -> None: ...
 class KafkaProducerService:
     def __init__(self, bootstrap_servers: str, topic: str):
         self._topic = topic
@@ -81,3 +86,60 @@ class MessagingManager:
             **kwargs
         }
         return await self.producer.send(key = routing_key, payload = payload)
+
+class KafkaConsumerService:
+    def __init__(self, bootstrap_servers : str, topic : str):
+        self.topic = topic
+        self.consumer = AIOKafkaConsumer(
+            self.topic,
+            bootstrap_servers = bootstrap_servers,
+            group_id = "llm-consumer-group",
+            auto_offset_reset = "earliest"
+        )
+    
+    async def start(self) -> None :
+        try :
+            await self.consumer.start()
+            logger.info("Consumer group has started")
+        except Exception as e:
+            logger.error("Exception occured while starting the consumer group")
+            raise e
+    
+    async def stop(self) -> None :
+        try :
+            await self.consumer.stop()
+            logger.info("Consumer group has stopped")
+        except Exception as e:
+            logger.error("Exception occured while stopping the consumer group")
+            raise e
+
+    # async def isHealthy(self) -> bool :
+    #     pass
+
+    async def consumeMessageViaConsumer(self, data) -> None :
+        try:
+            logger.info(data)
+        except Exception as e:
+            logger.error(f"Error consuming message: {e}")
+            raise e
+
+class ConsumingManager:
+    def __init__(self, consumer : MessageConsumer):
+        self.consumer = consumer
+    
+    async def consumeTheUserMessage(self):
+        async for msg in self.consumer:
+            raw_key = msg.key
+            raw_value = msg.value
+            key = raw_key.decode("utf-8") if raw_key else None
+            value = json.loads(raw_value.decode("utf-8")) if raw_value else None
+            logger.info(f"Consumed from topic={msg.topic}, partition={msg.partition}, offset={msg.offset}")
+
+            data = {
+                "key": key,
+                "value": value,
+                "partition": msg.partition,
+                "offset": msg.offset
+            }
+
+        return await self.consumer.consumeMessageViaConsumer(data)
