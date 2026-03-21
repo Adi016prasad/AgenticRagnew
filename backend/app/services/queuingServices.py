@@ -127,7 +127,7 @@ class ConsumingManager:
     def __init__(self, consumer : MessageConsumer):
         self.consumer = consumer
     
-    async def consumeTheUserMessage(self):
+    async def consumeTheUserMessage(self) -> Optional[Any]:
         async for msg in self.consumer:
             raw_key = msg.key
             raw_value = msg.value
