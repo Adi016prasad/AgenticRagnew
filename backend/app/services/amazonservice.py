@@ -72,7 +72,6 @@ class UploadFile():
         except Exception as e:
             raise e
     
-    @retry_with_backoff(max_retries = MAX_S3_RETRIES, base_delay = S3_BASE_DELAY)
     def listOfObjects(self, prefix):
         prefix = prefix
         response = self.client.list_objects_v2(Bucket = self.bucket_name, Prefix = prefix)

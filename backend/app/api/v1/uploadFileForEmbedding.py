@@ -50,6 +50,6 @@ def listobjects(prefix):
     s3_uploader.listOfObjects(prefix)
 
 if __name__ == "__main__":
-    uploadFile("12345", "/home/aditya/Desktop/agenticrag/backend/General FAQs (8).pdf")
-    deleteFile("12345", "12345/General FAQs (5).pdf")
+    # uploadFile("12345", "/home/aditya/Desktop/agenticrag/backend/General FAQs (8).pdf")
+    # deleteFile("12345", "12345/General FAQs (5).pdf")
     listobjects("12345/")
